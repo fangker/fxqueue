@@ -18,6 +18,7 @@ let queue=xqueue.createQueue({
 
 let job1=queue.createJob('email1',{name:'zhangsan'}).save()
 job1.on('enqueue',(...args)=>{
+    console.log(...args)
 })
 let j1msg=  queue.process('email1').then((job)=>{
     console.log(job)
