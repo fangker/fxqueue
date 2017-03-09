@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #fxqueue
 
 fxqueue是基于redis的nodejs优先级任务队列并对空间键事件通知进行支持。
@@ -53,3 +54,6 @@ let job= queue.createJob('email1',{name:'zhangsan'}).priority('high').save()
 ### 延时任务
 
 如果Redis开启了key-space-event notification 选项,为了防止不必要的延迟和不断得到通知，此功能将加入 schedule 队列(被动接受) 详见 []
+=======
+项目正在完善中、、、、、、、
+>>>>>>> origin/master
