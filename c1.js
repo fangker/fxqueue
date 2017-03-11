@@ -19,10 +19,10 @@ let queue=xqueue.createQueue({
 //     console.log(data)
 // })
 
-let job1=queue.createJob('email1',{name:'zhangsan'}).dealy(10).save()
-job1.on('enqueue').then(data=>{
-    console.log(data)
-})
-// let j1msg=  queue.process('email1').then((job)=>{
-//     console.log(job,6666666666666)
+// let job1=queue.createJob('email1',{name:'zhangsan'}).dealy(10).save()
+// job1.on('enqueue').then(data=>{
+//     console.log(data)
 // })
+let j1msg=  queue.process('email1').then((job)=>{
+    console.log(job,6666666666666)
+})
