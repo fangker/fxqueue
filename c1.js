@@ -15,14 +15,14 @@ let queue=xqueue.createQueue({
         }
     }
 })
-// queue.observed(1,2).on('*').then(data=>{
-//     console.log(data)
-// })
+queue.observed(1,2).on('*').then(data=>{
+    
+})
 
-// let job1=queue.createJob('email1',{name:'zhangsan'}).dealy(10).save()
-// job1.on('enqueue').then(data=>{
-//     console.log(data)
-// })
+let job1=queue.createJob('email1',{name:'zhangsan'}).ttl(1000).save()
+job1.on('enqueue').then(data=>{
+    console.log(data,666666666)
+})
 let j1msg=  queue.process('email1').then((job)=>{
-    console.log(job,6666666666666)
+    console.log(job)
 })
