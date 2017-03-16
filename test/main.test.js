@@ -1,4 +1,4 @@
-
+const test = require('ava');
 const xqueue= require('./index.js');
 let queue=xqueue.createQueue({
     options:{
@@ -35,4 +35,16 @@ queue.observed(1,2).on('*').then(data=>{
 let b=queue.createSchema('zzzz',{name:'lisi'}).ttl(2000).save()
 let m=queue.ontime({type:'zzzz',only:true}).then(a=>{
     console.log(a)
+});
+
+test('foo', t => {
+    t.pass();
+});
+
+test('bar', async t => {
+    const bar = Promise.resolve('bar');
+    t.is(await bar, 'b1ar');
+});
+test(async function (t) {
+    
 });

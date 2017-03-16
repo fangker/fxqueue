@@ -19,7 +19,7 @@ queue.observed(1,2).on('*').then(data=>{
     console.log(data)
 })
 
-let job1=queue.createJob('email1',{name:'zhangs22an'}).save()
+let job1=queue.createJob('email1',{name:'zhangs22an'}).attempts(2).save()
 job1.on('enqueue').then(data=>{
     console.log(data)
 })

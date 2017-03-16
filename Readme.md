@@ -22,8 +22,9 @@ npm install fxqueue
 - Restul API支持
 
 ##概览
+***
 
-## 创建任务
+## 创建队列任务
 
 使用 `fxqueue.createQueue()`创建队列，如下
 
@@ -74,8 +75,31 @@ queue.observed(1,2).on('*').then(data=>{
     console.log(data)
 })
 ```
+
 允许对redis队列事件进行监听,通过`.delay([id])`来设定监听ID,可设定多个监听ID。使用`.on(event)`设置监听对象.
 
 如果Redis开启了key-space-event notification 选项,为了防止不必要的延迟和不断得到通知，此功能将加入 schedule 队列(被动接受) 详见 []
-项目正在完善中、、、、、、、
+
+
+##定时任务事件
+###创建定时任务
+> 请开启  redis key-event-notify 事件通知选项 
+
+```js
+    queue.createSchema('type',{data}).ttl(ttl).save()
+//ex:let schema=queue.createSchema('sendMessage',{name:'lisi'}).ttl(2000).save()
+```
+可以通过`type`参数设定定时任务类型,通过`.ttl()`设定通知时间(ps:Date或者ms)，使用`.save()`储存任务到redis，此时将返回`<promise>`对象，可获得其ID。
+
+### 监听定时任务
+```js
+queue.ontime('type');    //1
+queue.ontime({type:'type',only:boolean});   //2
+//ex:let schemajob=queue.ontime({type:'sendMessage',only:true})
+```
+
+使用`.ontime()`监听到期通知。当定时通知运行时将返回`<promise>`对象，可获得id,data。
+当使用1方式时,默认消息将被广播所有调用`.ontime()`方法监听此类型的node终端，都将返回信息。
+当使用2方式时，只有正在运行的此终端可以返回信息，其他终端将进入待命状态，当此终端崩溃或者销毁后，其他某个终端将会接替此终端任务，保证此定时任务通知只会触发一个终端使用。 
+**注意:** 使用2方式时，不能保证在终端崩溃与下一个终端接入的时间段内触发的定时通知不会丢失。(解决方法会导致产生乱开时间段内的延迟，解决思路已出)
 
