@@ -15,24 +15,23 @@ let queue=xqueue.createQueue({
         }
     }
 })
-queue.observed(1,2).on('*').then(data=>{
-    
-})
     async function a() {
-    job1= await queue.createJob('email1',{name:'zhangsan'}).ttl(1000).delay(5000).attempts(3).save();
-    job1.on('enqueue').then(data=>{
-        console.log(666666666)
-    })
+   const  job1= await queue.createJob('email1',{name:'zhangsan'}).ttl(1000).delay(2000).attempts(3).save();
+  // console.log(job1)
+   //const event = await  job1.on('complete');
+  // console.log(event,11111111111111111111)
+//    const ob= await queue.observed(1,2).on('*');
+//     console.log(ob)
    }
    a()
 
     
 
 
-// let j1msg=  queue.process('email1').then((job)=>{
-//    // console.log(job)
-// })
-let b=queue.createSchema('zzzz',{name:'lisi'}).ttl(2000).save()
-let m=queue.ontime({type:'zzzz',only:true}).then(a=>{
-    console.log(a)
-});
+let j1msg=  queue.process('email1').then((job)=>{
+  // job.done('121221212')
+})
+// let b=queue.createSchema('zzzz',{name:'lisi'}).ttl(2000).save()
+// let m=queue.ontime('zzzz').then(a=>{
+//     console.log(a,66666666666)
+// });
