@@ -15,36 +15,26 @@ let queue = xqueue.createQueue({
     }
 })
 
- test('queueEvent', t => {
-     return queue.observed(1, 2).on('*').then(data => {
-         t.deepEqual(typeof data, 'object')
-     })
- });
+test('queueEvent', t => {
+    return queue.observed(1, 2).on('*').then(data => {
+        t.deepEqual(typeof data, 'object')
+    })
+});
 test('createJobAndJobevent', async function (t) {
     const job1 = await queue.createJob('email1', { name: 'zhangsan' }).ttl(1000).delay(5000).attempts(3).save();
     const job2 = await queue.createJob('test', { name: 'zhangsan' }).ttl(1000).delay(5000).attempts(3).save();
-    t.deepEqual(typeof job1, 'object');
-    const event_enqueue = await job1.on('enqueue');
-    t.deepEqual(typeof event_enqueue, 'object')
-    const event_active= await job1.on('active');
-    t.deepEqual(typeof event_active, 'object')
-    const event_failed = await job2.on('failed');
-    t.deepEqual(typeof event_failed, 'object')
-    const event_retry = await job2.on('retry');
-    t.deepEqual(typeof event_retry, 'object')
-    const event_promotion = await job1.on('promotion');
-    t.deepEqual(typeof event_promotion, 'object')
-
+    t.deepEqual(typeof job1.id, 'number')
+    t.deepEqual(typeof job2.id, 'number')
 });
 
 test('process failed', async function (t) {
-    const jmsg = await queue.process('test')
-    t.deepEqual(typeof jmsg, 'object')
+    const jmsg1 = await queue.process('test')
+    t.deepEqual(typeof jmsg1, 'object')
 });
 test('process complete', async function (t) {
     const jmsg2 = await queue.process('email1')
     jmsg2.done('job complete');
-    t.deepEqual(typeof jmsg2, 'object')
+    t.deepEqual( jmsg2.Json().data, '{"name":"zhangsan"}')
 });
 
 
