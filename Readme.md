@@ -1,5 +1,5 @@
 
-    ![fxqueue](http://7mnlvi.com1.z0.glb.clouddn.com/fxqueue.png?imageView/2/w/600)
+![fxqueue](http://7mnlvi.com1.z0.glb.clouddn.com/fxqueue.png?imageView/2/w/600)
 
 # fxqueue
 
