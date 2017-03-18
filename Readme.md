@@ -1,14 +1,14 @@
 
-![](http://7mnlvi.com1.z0.glb.clouddn.com/fxqueue.png)
-#fxqueue
+![fxqueue](http://7mnlvi.com1.z0.glb.clouddn.com/fxqueue.png)
+# fxqueue
 
 fxqueue是基于redis的nodejs优先级任务队列并对空间键事件通知进行支持。
 
-##安装
+## 安装
 
 npm install fxqueue 
 
-##特征 
+## 特征 
 - 定时任务队列(基于redis 空间键事件通知)
 - 优先级队列
 - 任务事件(基于redis pub/sub)
