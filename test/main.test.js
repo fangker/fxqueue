@@ -54,4 +54,3 @@ test('getSchemaOnly', async function (t) {
     let getschema2 = await queue.ontime({ type: 'qqqq', only: true })
     t.deepEqual(typeof getschema2, 'object');
 });
-
