@@ -40,17 +40,19 @@ test('process complete', async function (t) {
 
 
 test('createSchema', async function (t) {
-    const getschemaid1 = await queue.createSchema('zzzz', { name: 'lisi' }).ttl(2000).save()
+    const getschemaid1 = await queue.createSchema('zzzz', { name: 'lisi' }).ttl(20000).schedule(20000).save()
     t.deepEqual(typeof getschemaid1, 'number');
-    const getschemaid2 = await queue.createSchema('qqqq', { name: 'zhanglei' }).ttl(2000).save()
+    const getschemaid2 = await queue.createSchema('qqqq', { name: 'zhanglei' }).ttl(20000).schedule(20000).save()
     t.deepEqual(typeof getschemaid2, 'number');
 });
 
 test('getSchema', async function (t) {
     const getschema1 = await queue.ontime({ type:'zzzz'});
+    getschema1.done();
     t.deepEqual(typeof getschema1, 'object');
 });
 test('getSchemaOnly', async function (t) {
     let getschema2 = await queue.ontime({ type: 'qqqq', only: true })
+    getschema1.done();
     t.deepEqual(typeof getschema2, 'object');
 });

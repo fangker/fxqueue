@@ -21,7 +21,7 @@ fxqueue是基于redis的nodejs优先级任务队列并对空间键事件通知�
 
 ## 未来可能支持
 
-- 0-0
+- redis 队列状态统计
 
 ## 概览
 
@@ -32,7 +32,7 @@ fxqueue是基于redis的nodejs优先级任务队列并对空间键事件通知�
 
 ```js
 var fxqueue = require('fxqueue')
-  , queue = kue.createQueue({option,redis});
+  , queue = fxqueue.createQueue({option,redis});
 ```
 
 使用`queue.create()`来创建队列，这里给出一个任务demo。我们创建email1任务分组，并通过使用`priority`设置优先级(PS：默认为normal)，`.save()`将队列信息储存到Redis中。 job将返回 Promise 对象， 将返回任务ID，这时候我们可以对特殊任务进行标记。
@@ -123,10 +123,11 @@ let job = await queue.process('email1');
 > 请开启  redis key-event-notify 事件通知选项 
 
 ```js
-    queue.createSchema('type',{data}).ttl(ttl).save()
-//ex:let schema=queue.createSchema('sendMessage',{name:'lisi'}).ttl(2000).save()
+    queue.createSchema('type',{data}).ttl(ttl).schedule(schedule).save()
+//ex:let schema=queue.createSchema('sendMessage',{name:'lisi'}).ttl([ms]).schedule([Date/ms]).save()
+// 20000ms后触发一个事件通知，它的处理生存期为2000ms
 ```
-可以通过`type`参数设定定时任务类型,通过`.ttl()`设定通知时间(ps:Date或者ms)，使用`.save()`储存任务到redis，此时将返回`<promise>`对象，可获得其ID。
+可以通过`type`参数设定定时任务类型,通过`.ttl()`设定任务最大完成耗时(ms),通过`.schedule()`设定事件通知触发时间。`.save()`储存任务到redis，此时将返回`<promise>`对象，可获得其信息。
 
 ### 监听定时任务
 ```js
@@ -141,10 +142,25 @@ queue.ontime({type:'type',only:true});   //2
 
 当使用2方式时，只有正在运行的此终端可以返回信息，其他终端将进入待命状态，当此终端崩溃或者销毁后，其他某个终端将会接替此终端任务，保证此定时任务通知只会触发一个终端使用。  
 
-**注意:** 使用2方式时，不能保证在终端崩溃与下一个终端接入的时间段内触发的定时通知不会丢失。(解决方法会导致产生乱开时间段内的延迟，解决思路已出)
+**注意:** 使用2方式时，可以保证在终端崩溃与下一个终端接入的时间段内触发的定时通知不会丢失。(解决方法会导致产生检测+redis锁时间段内的延迟)
 
 
+## shutDown
+```js
+const queue = fxqueue.createQueue({option,redis});
+queue.shutdown(ms);
+```
+使用`.shutdown()`方法,停止队列服务,参数ms可以指定最长等待事件,即等待当前队列中正在进行任务结束的时长,若在此期间没有结束,队列任务将会被标记为失败。
 
-
-
-
+## 当前终端队列状态概览
+```js
+queue.detail();
+```
+```js
+-`job_List_Count`          存在的job对象数
+-`ob_List_Count`           存在的ob对象数
+-`schema_List_Count`       存在的schema对象数
+-`shutingDown`             正在停止
+-`shutDown`                停止
+```
+使用`.detail()`方法查看当前终端状态概览，一定情况反映了终端的内存使用状态。
