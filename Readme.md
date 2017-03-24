@@ -1,6 +1,6 @@
 
 ![fxqueue](http://7mnlvi.com1.z0.glb.clouddn.com/fxqueue.png?imageView/2/w/600)
-
+[![NPM](https://nodei.co/npm/fxqueue.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/fxqueue/)
 # fxqueue
 
 fxqueue是基于redis的nodejs优先级任务队列并对空间键事件通知进行支持。
